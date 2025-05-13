@@ -462,7 +462,7 @@
     function assignBuilding(data) {
         $.ajax({
             type: "POST",
-            url: "/api/buildings/assignments",
+            url: "/api/assignments",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",

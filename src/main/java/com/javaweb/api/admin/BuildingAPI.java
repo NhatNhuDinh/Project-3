@@ -4,7 +4,7 @@ import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.service.impl.BuildingService;
+import com.javaweb.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +17,26 @@ import java.util.List;
 public class BuildingAPI {
 
     @Autowired
-    private BuildingService buildingService;
+    private IBuildingService buildingService;
 
     //create or update
     @PostMapping()
     public ResponseEntity<ResponseDTO> createBuilding(@Valid @RequestBody BuildingDTO buildingDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Success");
-        responseDTO.setData(buildingService.createOrUpdate(buildingDTO)); // return Building Entity - Json
+        responseDTO.setData(buildingService.create(buildingDTO)); // return Building Entity - Json
         return ResponseEntity.ok(responseDTO);
     }
+
+    @PutMapping()
+    public ResponseEntity<ResponseDTO> updateBuilding(@Valid @RequestBody BuildingDTO buildingDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("Success");
+        responseDTO.setData(buildingService.update(buildingDTO)); // return Building Entity - Json
+        return ResponseEntity.ok(responseDTO);
+    }
+
+
 
     @DeleteMapping("/{ids}")
     public ResponseEntity<ResponseDTO> deleteBuildings(@PathVariable String ids) {
@@ -45,12 +55,5 @@ public class BuildingAPI {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PostMapping("/assignments")
-    public ResponseEntity<ResponseDTO> assignStaff(@Valid @RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
-        buildingService.assignStaff(assignmentBuildingDTO);
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setMessage("Success");
-        return ResponseEntity.ok(responseDTO);
-    }
 
 }

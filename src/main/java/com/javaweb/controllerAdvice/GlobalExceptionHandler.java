@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     // validate request data
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResponseDTO> handleValidationException(MethodArgumentNotValidException mex){ // do @Valid nem ra ex nay
+    public ResponseEntity<ResponseDTO> handleValidationException(MethodArgumentNotValidException mex){
         List<String> errors = mex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Validation Error");

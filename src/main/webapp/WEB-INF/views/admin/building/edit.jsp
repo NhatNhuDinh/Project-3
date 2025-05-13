@@ -437,7 +437,11 @@
         }
 
         if (isValid) {
-            saveBuilding(buildingInfoJson)
+            if (buildingInfoJson['id'] === '') {
+                saveBuilding(buildingInfoJson);
+            } else {
+                updateBuilding(buildingInfoJson);
+            }
         } else {
             alert('Vui lòng nhập đầy đủ thông tin cần thiết!');
         }
@@ -445,6 +449,28 @@
         function saveBuilding(buildingInfoJson) {
             $.ajax({
                 type: "POST",
+                url: "/api/buildings",
+                data: JSON.stringify(buildingInfoJson),
+                dataType: "json",
+                contentType: "application/json",
+                success: function (response) {
+                    alert(response.message);
+                    window.location.href = "/admin/building-list";
+                },
+                error: function (response) {
+                    var err = response.responseJSON.message;
+                    $.each(response.responseJSON.data, function (i, it) {
+                        err += '\n' + it;
+                    })
+                    alert(err)
+                }
+
+            });
+        }
+
+        function updateBuilding(buildingInfoJson) {
+            $.ajax({
+                type: "PUT",
                 url: "/api/buildings",
                 data: JSON.stringify(buildingInfoJson),
                 dataType: "json",

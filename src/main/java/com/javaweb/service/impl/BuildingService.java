@@ -3,10 +3,8 @@ package com.javaweb.service.impl;
 import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.converter.BuildingConverter;
 import com.javaweb.converter.BuildingSearchBuilderConverter;
-import com.javaweb.entity.AssignmentBuildingEntity;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.UserEntity;
-import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
@@ -19,12 +17,11 @@ import com.javaweb.service.IBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +55,12 @@ public class BuildingService implements IBuildingService {
         BuildingSearchBuilder buildingSearchBuilder = buildingSearchBuilderConverter.toBuildingSearchBuilder(buildingSearchRequest);
         List<BuildingEntity> buildingEntityList = buildingRepository.getAll(buildingSearchBuilder);
         List<BuildingSearchResponse> responseList = buildingEntityList.stream().map(buildingConverter::toBuildingSearchResponse).collect(Collectors.toList());
+        responseList.sort(
+                Comparator.comparing(
+                        BuildingSearchResponse::getCreatedDate,
+                        Comparator.nullsLast(Comparator.<Date>reverseOrder())
+                )
+        );
         return responseList;
     }
 
@@ -69,19 +72,19 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public BuildingEntity createOrUpdate(BuildingDTO buildingDTO) {
+    public BuildingEntity create(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
-        // update
-        if (buildingEntity.getId() != null) {
-            rentAreaService.deleteAllByBuildingId(buildingEntity.getId());
-            rentAreaService.saveAll(buildingEntity, buildingDTO.getRentArea());
-            buildingRepository.save(buildingEntity);
-        } else {
-            //create
-            buildingRepository.save(buildingEntity);
-            rentAreaService.saveAll(buildingEntity, buildingDTO.getRentArea());
-        }
+        buildingRepository.save(buildingEntity);
+        rentAreaService.saveAll(buildingEntity, buildingDTO.getRentArea());
+        return buildingEntity;
+    }
 
+    @Override
+    public BuildingEntity update(BuildingDTO buildingDTO) {
+        BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
+        rentAreaService.deleteAllByBuildingId(buildingEntity.getId());
+        rentAreaService.saveAll(buildingEntity, buildingDTO.getRentArea());
+        buildingRepository.save(buildingEntity);
         return buildingEntity;
     }
 
@@ -109,30 +112,5 @@ public class BuildingService implements IBuildingService {
                 }).collect(Collectors.toList());
     }
 
-    @Override
-    public void assignStaff(AssignmentBuildingDTO assignmentBuildingDTO) {
-        Long buildingId = assignmentBuildingDTO.getBuildingId();
-        List<Long> staffIds = assignmentBuildingDTO.getStaffs();
-        if(staffIds.isEmpty()){
-            assignmentBuildingRepository.deleteByBuildingEntity_IdIn(Collections.singletonList(buildingId));
-        }
-        else{
-            // xóa tất cả tòa nhà cũ trước
-            assignmentBuildingRepository.deleteByBuildingEntity_IdIn(Collections.singletonList(buildingId));
 
-            // bắt ngoại lệ khi tìm buildingid mà không thấy
-            BuildingEntity buildingEntity = buildingRepository.findById(buildingId).orElseThrow(() -> new EntityNotFoundException("Không tìm thấy tòa nhà có id: " + buildingId));
-
-            // lấy toàn bộ entity để save
-            List<AssignmentBuildingEntity> assignmentBuildingEntityList = staffIds.stream().map(staffId -> {
-                AssignmentBuildingEntity assignmentBuildingEntity = new AssignmentBuildingEntity();
-                assignmentBuildingEntity.setUserEntity(userRepository.findById(staffId).orElseThrow(() -> new EntityNotFoundException("Không tìm thấy user có id: " + staffId)));
-                assignmentBuildingEntity.setBuildingEntity(buildingEntity);
-                return assignmentBuildingEntity;
-            }).collect(Collectors.toList());
-
-            //thêm mới lại
-            assignmentBuildingRepository.saveAll(assignmentBuildingEntityList);
-        }
-    }
 }
