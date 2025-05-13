@@ -46,7 +46,7 @@ public class BuildingAPI {
     }
 
     @PostMapping("/assignments")
-    public ResponseEntity<ResponseDTO> assignStaff(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
+    public ResponseEntity<ResponseDTO> assignStaff(@Valid @RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
         buildingService.assignStaff(assignmentBuildingDTO);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Success");
