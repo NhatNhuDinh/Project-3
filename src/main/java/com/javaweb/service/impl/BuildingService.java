@@ -99,7 +99,7 @@ public class BuildingService implements IBuildingService {
     @Override
     public List<StaffResponseDTO> staffList(Long buildingId) {
         List<UserEntity> allStaff = userRepository.findByStatusAndRoles_Code(1, "STAFF");
-        List<UserEntity> assignedStaff = userRepository.findByStatusAndRoles_CodeAndAssignmentBuildingEntityList_BuildingEntity_Id(1, "STAFF", buildingId);
+        List<UserEntity> assignedStaff = userRepository.findByStatusAndRoles_CodeAndBuildingEntityList_Id(1, "STAFF", buildingId);
         return allStaff.stream()
                 .map(staff -> {
                     StaffResponseDTO staffResponseDTO = new StaffResponseDTO();

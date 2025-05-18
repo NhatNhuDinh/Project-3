@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,10 +19,15 @@ public class BuildingEntity extends BaseEntity{
     @JsonManagedReference(value = "building-rentArea")
     private List<RentAreaEntity> rentAreaEntityList;
 
-    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "building-assignmentBuilding")
-    private List<AssignmentBuildingEntity> assignmentBuildingEntityList;
+//    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY)
+//    @JsonManagedReference(value = "building-assignmentBuilding")
+//    private List<AssignmentBuildingEntity> assignmentBuildingEntityList;
 
+    @ManyToMany
+    @JoinTable(name = "assignmentbuilding",
+            joinColumns = @JoinColumn(name = "buildingid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+    private List<UserEntity> userEntityList = new ArrayList<>();
 
     @Column(name = "name", nullable = false)
     private String name;

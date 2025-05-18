@@ -36,8 +36,7 @@ public class BuildingAPI {
         return ResponseEntity.ok(responseDTO);
     }
 
-
-
+    
     @DeleteMapping("/{ids}")
     public ResponseEntity<ResponseDTO> deleteBuildings(@PathVariable String ids) {
         buildingService.deleteAll(ids);

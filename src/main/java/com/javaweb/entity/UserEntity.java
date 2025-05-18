@@ -41,8 +41,12 @@ public class UserEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
     private List<RoleEntity> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "user-assignmentBuilding")
-    private List<AssignmentBuildingEntity> assignmentBuildingEntityList;
+
+    @ManyToMany(mappedBy = "userEntityList", fetch = FetchType.LAZY)
+    private List<BuildingEntity> buildingEntityList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
+//    @JsonManagedReference(value = "user-assignmentBuilding")
+//    private List<AssignmentBuildingEntity> assignmentBuildingEntityList;
 
 }
