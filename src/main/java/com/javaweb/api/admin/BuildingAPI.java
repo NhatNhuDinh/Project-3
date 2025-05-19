@@ -5,6 +5,7 @@ import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.service.IBuildingService;
+import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class BuildingAPI {
 
     @Autowired
     private IBuildingService buildingService;
+
+    @Autowired
+    private IUserService userService;
 
     //create or update
     @PostMapping()
@@ -47,7 +51,7 @@ public class BuildingAPI {
 
     @GetMapping("/{id}/staffs")
     public ResponseEntity<ResponseDTO> getStaffs(@PathVariable Long id) {
-        List<StaffResponseDTO> staffResponseDTOList = buildingService.staffList(id);
+        List<StaffResponseDTO> staffResponseDTOList = userService.staffList(id);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Success");
         responseDTO.setData(staffResponseDTOList);

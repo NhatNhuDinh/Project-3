@@ -7,6 +7,7 @@ import com.javaweb.model.dto.UserDTO;
 import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
+import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.service.IUserService;
@@ -88,6 +89,22 @@ public class UserService implements IUserService {
         return staffList
                 .stream()
                 .collect(Collectors.toMap(UserEntity::getId, UserEntity::getUserName));
+    }
+
+    @Override
+    public List<StaffResponseDTO> staffList(Long buildingId) {
+        List<UserEntity> allStaff = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> assignedStaff = userRepository.findByStatusAndRoles_CodeAndBuildingEntityList_Id(1, "STAFF", buildingId);
+        return allStaff.stream()
+                .map(staff -> {
+                    StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
+                    staffResponseDTO.setStaffId(staff.getId());
+                    staffResponseDTO.setFullName(staff.getFullName());
+                    if (assignedStaff.contains(staff)) {
+                        staffResponseDTO.setChecked("checked");
+                    }
+                    return staffResponseDTO;
+                }).collect(Collectors.toList());
     }
 
 

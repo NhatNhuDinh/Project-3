@@ -4,6 +4,9 @@ import com.javaweb.builder.BuildingSearchBuilder;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.repository.BuildingRepositoryCustom;
 import com.javaweb.utils.Validation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,17 +24,32 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
 
 
     @Override
-    public List<BuildingEntity> getAll(BuildingSearchBuilder buildingSearchBuilder) {
-        StringBuilder sql = new StringBuilder(
-                "select b.* from building b");
+    public List<BuildingEntity> getAll(BuildingSearchBuilder buildingSearchBuilder, Pageable pageable) {
+
+        StringBuilder sql = new StringBuilder("select b.* from building b");
         StringBuilder where = new StringBuilder(" where 1 = 1");
         addJoin(buildingSearchBuilder, sql);
         addWhere(buildingSearchBuilder, where);
         sql.append(where);
-        String groupBy = " group by b.id";
-        sql.append(groupBy);
+        String groupBy = " group by b.id ";
+        sql.append(groupBy).append("Order by b.createddate desc ");
+        sql.append(" LIMIT ").append(pageable.getPageSize());
+        sql.append(" OFFSET ").append(pageable.getPageSize() * pageable.getPageNumber());
         Query query = entityManager.createNativeQuery(sql.toString(), BuildingEntity.class);
         return query.getResultList();
+    }
+
+    @Override
+    public int countTotalSearch(BuildingSearchBuilder buildingSearchBuilder) {
+        //  Query lấy tổng số bản ghi (count)
+        StringBuilder countSql = new StringBuilder("select count(distinct b.id) from building b");
+        StringBuilder where = new StringBuilder(" where 1 = 1");
+        addJoin(buildingSearchBuilder, countSql);
+        addWhere(buildingSearchBuilder, where);
+        countSql.append(where);
+        Query countQuery = entityManager.createNativeQuery(countSql.toString());
+        Number countResult = (Number) countQuery.getSingleResult();
+        return countResult.intValue();
     }
 
     private void addJoin(BuildingSearchBuilder buildingSearchBuilder, StringBuilder sql) {

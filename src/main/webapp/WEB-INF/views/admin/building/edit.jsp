@@ -109,7 +109,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 widget-container-col">
 
-                        <form:form class="form-horizontal" id="buildingInfo" method="POST" modelAttribute="buildingDTO">
+                        <form:form class="form-horizontal" id="buildingInfo" method="POST" modelAttribute="buildingDTO" enctype="multipart/form-data">
 
                             <input type="hidden" value="${buildingDTO.id}" name="id">
 
@@ -338,6 +338,21 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right">Hình đại diện</label>
+                                <input class="col-sm-3 no-padding-right" type="file" id="uploadImage"/>
+                                <div class="col-sm-9">
+                                    <c:if test="${not empty buildingDTO.image}">
+                                        <c:set var="imagePath" value="/repository${buildingDTO.image}"/>
+                                        <img src="${imagePath}" id="viewImage" width="300px" height="300px"
+                                             style="margin-top: 50px">
+                                    </c:if>
+                                    <c:if test="${empty buildingDTO.image}">
+                                        <img src="/admin/image/default.png" id="viewImage" width="300px" height="300px">
+                                    </c:if>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right"></label>
 
                                 <div class="col-sm-9">
@@ -386,6 +401,9 @@
 
 <script>
 
+    var imageBase64 = '';
+    var imageName = '';
+
     $('#btn-submit').click(function () {
 
         $('.error-message').remove();
@@ -399,7 +417,18 @@
             } else {
                 typeCode.push(it.value);
             }
+
+            if ('' !== it.value && null != it.value) {
+                buildingInfoJson['' + it.name + ''] = it.value;
+            }
+
+            if ('' !== imageBase64) {
+                buildingInfoJson['imageBase64'] = imageBase64;
+                buildingInfoJson['imageName'] = imageName;
+            }
         });
+
+
         buildingInfoJson['typeCode'] = typeCode;
         console.log(buildingInfoJson);
         // saveBuilding(buildingInfoJson);
@@ -446,6 +475,7 @@
             alert('Vui lòng nhập đầy đủ thông tin cần thiết!');
         }
 
+
         function saveBuilding(buildingInfoJson) {
             $.ajax({
                 type: "POST",
@@ -490,7 +520,33 @@
             });
         }
 
+
+
+
     });
+
+    $('#uploadImage').change(function (event) {
+        var reader = new FileReader();
+        var file = $(this)[0].files[0];
+        reader.onload = function(e){
+            imageBase64 = e.target.result;
+            imageName = file.name; // ten hinh khong dau, khoang cach. vd: a-b-c
+        };
+        reader.readAsDataURL(file);
+        openImage(this, "viewImage");
+    });
+
+    function openImage(input, imageView) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#' +imageView).attr('src', reader.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
 </script>
 </body>
 </html>

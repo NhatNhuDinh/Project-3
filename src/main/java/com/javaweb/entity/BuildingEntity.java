@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 public class BuildingEntity extends BaseEntity{
 
-    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "building-rentArea")
     private List<RentAreaEntity> rentAreaEntityList;
 
@@ -23,7 +23,7 @@ public class BuildingEntity extends BaseEntity{
 //    @JsonManagedReference(value = "building-assignmentBuilding")
 //    private List<AssignmentBuildingEntity> assignmentBuildingEntityList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "assignmentbuilding",
             joinColumns = @JoinColumn(name = "buildingid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
@@ -104,5 +104,6 @@ public class BuildingEntity extends BaseEntity{
     @Column(name = "brokeragefee")
     private Double brokerageFee;
 
-
+    @Column(name = "avatar")
+    private String image;
 }

@@ -1,6 +1,7 @@
 package com.javaweb.converter;
 
 import com.javaweb.entity.BuildingEntity;
+import com.javaweb.entity.RentAreaEntity;
 import com.javaweb.enums.District;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.BuildingSearchResponse;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -40,7 +42,15 @@ public class BuildingConverter {
     public BuildingEntity toBuildingEntity(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = modelMapper.map(buildingDTO, BuildingEntity.class);
         String typeBuilding = buildingDTO.getTypeCode().stream().collect(Collectors.joining(","));
+        List<RentAreaEntity> rentAreaEntityList = Arrays.stream(buildingDTO.getRentArea().split(","))
+                .map(value -> {
+                    RentAreaEntity rentAreaEntity = new RentAreaEntity();
+                    rentAreaEntity.setValue(Long.parseLong(value));
+                    rentAreaEntity.setBuildingEntity(buildingEntity);
+                    return rentAreaEntity;
+                }).collect(Collectors.toList());
         buildingEntity.setTypeCode(typeBuilding);
+        buildingEntity.setRentAreaEntityList(rentAreaEntityList);
         return buildingEntity;
     }
 
