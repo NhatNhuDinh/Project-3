@@ -42,7 +42,7 @@ public class BuildingAPI {
 
     
     @DeleteMapping("/{ids}")
-    public ResponseEntity<ResponseDTO> deleteBuildings(@PathVariable String ids) {
+    public ResponseEntity<ResponseDTO> deleteBuildings(@PathVariable List<Long> ids) {
         buildingService.deleteAll(ids);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Success");

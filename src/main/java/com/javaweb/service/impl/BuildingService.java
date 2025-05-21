@@ -87,9 +87,8 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    public void deleteAll(String ids) {
-        List<Long> idList = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
-        buildingRepository.deleteAllByIdIn(idList);
+    public void deleteAll(List<Long> ids) {
+        buildingRepository.deleteAllByIdIn(ids);
     }
 
     @Override

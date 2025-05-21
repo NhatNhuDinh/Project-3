@@ -18,7 +18,7 @@ public interface IBuildingService {
 
     BuildingEntity update(BuildingDTO buildingDTO);
 
-    void deleteAll(String ids);
+    void deleteAll(List<Long> ids);
 
     int countTotalSearch(BuildingSearchRequest buildingSearchRequest);
 
