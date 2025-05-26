@@ -16,7 +16,7 @@ public class JpaAuditingConfig {
     @Bean
     AuditorAware<String> auditorProvider() {
         return new AuditorAwareImpl();
-    }
+    } 
 
     public class AuditorAwareImpl implements AuditorAware<String> {
 

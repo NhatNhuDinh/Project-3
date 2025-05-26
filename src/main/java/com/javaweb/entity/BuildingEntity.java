@@ -1,6 +1,8 @@
 package com.javaweb.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +15,7 @@ import java.util.List;
 @Table(name="building")
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class BuildingEntity extends BaseEntity{
 
     @OneToMany(mappedBy = "buildingEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

@@ -26,7 +26,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(responseDTO);
     }
 
-
     // validate left server error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDTO> handleException(Exception e){

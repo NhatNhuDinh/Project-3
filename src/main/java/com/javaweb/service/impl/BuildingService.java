@@ -76,6 +76,7 @@ public class BuildingService implements IBuildingService {
                     .orElseThrow(() -> new NotFoundException("Building not found!"));
             buildingEntity.setImage(foundBuilding.getImage());
         }
+
         saveThumbnail(buildingDTO, buildingEntity);
         buildingRepository.save(buildingEntity);
         return buildingEntity;

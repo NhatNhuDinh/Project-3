@@ -2,9 +2,12 @@ package com.javaweb.converter;
 
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RentAreaEntity;
+import com.javaweb.entity.UserEntity;
 import com.javaweb.enums.District;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.repository.BuildingRepository;
+import com.javaweb.service.IBuildingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +24,8 @@ public class BuildingConverter {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private BuildingRepository buildingRepository;
 
     //Entity -> response
     public BuildingSearchResponse toBuildingSearchResponse(BuildingEntity buildingEntity) {
@@ -49,6 +54,14 @@ public class BuildingConverter {
                     rentAreaEntity.setBuildingEntity(buildingEntity);
                     return rentAreaEntity;
                 }).collect(Collectors.toList());
+
+        if(buildingDTO.getId() != null){
+            BuildingEntity building = buildingRepository.findById(buildingDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Building not found with ID: " + buildingDTO.getId()));
+            List<UserEntity> userEntities = building.getUserEntityList();
+            buildingEntity.setUserEntityList(userEntities);
+        }
+
         buildingEntity.setTypeCode(typeBuilding);
         buildingEntity.setRentAreaEntityList(rentAreaEntityList);
         return buildingEntity;
