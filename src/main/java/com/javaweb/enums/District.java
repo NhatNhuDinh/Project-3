@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public enum District {
+
     QUAN_1("Quận 1"),
     QUAN_2("Quận 2"),
     QUAN_3("Quận 3"),
@@ -29,4 +30,6 @@ public enum District {
                 .collect(Collectors.toMap(District::toString, District::getdistrictName,(e, r) -> e, TreeMap::new));
         return districts;
     }
+
+
 }

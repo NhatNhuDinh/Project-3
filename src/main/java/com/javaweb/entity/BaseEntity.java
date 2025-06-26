@@ -1,17 +1,13 @@
 package com.javaweb.entity;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -863164858986274318L;
@@ -20,21 +16,45 @@ public class BaseEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "createddate")
-    @CreatedDate
+    @Column(name = "createddate", updatable = false)
     private Date createdDate;
 
-    @Column(name = "createdby")
-    @CreatedBy
+    @Column(name = "createdby", updatable = false)
     private String createdBy;
 
     @Column(name = "modifieddate")
-    @LastModifiedDate
     private Date modifiedDate;
 
     @Column(name = "modifiedby")
-    @LastModifiedBy
     private String modifiedBy;
+
+    @PrePersist
+    protected void onCreate() {
+        Date now = new Date();
+        String currentUser = getCurrentUsername();
+
+        this.createdDate = now;
+        this.createdBy = currentUser;
+
+        this.modifiedDate = null;
+        this.modifiedBy = null;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.modifiedDate = new Date();
+        this.modifiedBy = getCurrentUsername();
+    }
+
+    private String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            return null;
+        }
+        return auth.getName();
+    }
+
+
 
     public Long getId() {
         return id;
@@ -48,31 +68,15 @@ public class BaseEntity implements Serializable {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public String getCreatedBy() {
         return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public Date getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
     public String getModifiedBy() {
         return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
     }
 }

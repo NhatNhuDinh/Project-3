@@ -7,6 +7,7 @@ import com.javaweb.model.dto.UserDTO;
 import com.javaweb.entity.RoleEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.exception.MyException;
+import com.javaweb.model.dto.UserRegisterDTO;
 import com.javaweb.model.response.StaffResponseDTO;
 import com.javaweb.repository.RoleRepository;
 import com.javaweb.repository.UserRepository;
@@ -84,11 +85,28 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean findByUserName(String userName) {
+        return userRepository.findByUserNameAndStatus(userName, 1) != null;
+    }
+
+    @Override
     public Map<Long, String> getStaffs() {
         List<UserEntity> staffList = userRepository.findByStatusAndRoles_Code(1, "STAFF");
         return staffList
                 .stream()
                 .collect(Collectors.toMap(UserEntity::getId, UserEntity::getUserName));
+    }
+
+    @Override
+    public void insert(UserRegisterDTO userRegisterDTO) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName(userRegisterDTO.getUserName());
+        userEntity.setFullName(userRegisterDTO.getFullName());
+        userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        userEntity.setStatus(1);
+        RoleEntity role = roleRepository.findOneByCode("USER");
+        userEntity.setRoles(Stream.of(role).collect(Collectors.toList()));
+        userRepository.save(userEntity);
     }
 
     @Override

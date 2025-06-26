@@ -4,6 +4,7 @@ import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.PasswordDTO;
 import com.javaweb.model.dto.UserDTO;
 import com.javaweb.exception.MyException;
+import com.javaweb.model.dto.UserRegisterDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +26,8 @@ public interface IUserService {
     void delete(long[] ids);
     List<UserDTO> getAllUsers(Pageable pageable);
     int countTotalItems();
-
+    boolean findByUserName(String userName);
     Map<Long, String> getStaffs();
-
+    void insert(UserRegisterDTO userRegisterDTO);
     List<StaffResponseDTO> staffList(Long buildingId);
 }

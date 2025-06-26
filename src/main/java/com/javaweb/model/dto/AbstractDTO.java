@@ -3,6 +3,7 @@ package com.javaweb.model.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.PrePersist;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
