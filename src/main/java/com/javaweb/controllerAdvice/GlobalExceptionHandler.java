@@ -1,6 +1,7 @@
 package com.javaweb.controllerAdvice;
 
 
+import com.javaweb.exception.DuplicatePhoneNumberException;
 import com.javaweb.model.response.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,14 @@ public class GlobalExceptionHandler {
         responseDTO.setMessage("Not found");
         responseDTO.setData(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseDTO);
+    }
+
+    @ExceptionHandler(DuplicatePhoneNumberException.class)
+    public ResponseEntity<ResponseDTO> handleNotFound(DuplicatePhoneNumberException ex) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        responseDTO.setMessage("Bad request");
+        responseDTO.setData(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
     }
 
 

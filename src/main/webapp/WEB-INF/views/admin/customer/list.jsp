@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Quản lí tòa nhà</title>
+    <title>Quản lí khách hàng</title>
 
     <style>
         .form-group {
@@ -30,7 +30,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="#">Trang chủ</a>
                     </li>
-                    <li class="active">Danh sách tòa nhà</li>
+                    <li class="active">Danh sách khách hàng</li>
                 </ul><!-- /.breadcrumb -->
 
 
@@ -104,7 +104,7 @@
 
                 <div class="page-header">
                     <h1>
-                        Danh sách tòa nhà
+                        Danh sách khách hàng
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
                             overview &amp; stats
@@ -113,8 +113,8 @@
                 </div><!-- /.page-header -->
 
                 <!-- table-to-search -->
-                <form:form id="search-data-form" method="GET" action="/admin/building-list"
-                           modelAttribute="buildingSearchRequest">
+                <form:form id="search-data-form" method="GET" action="/admin/customer-list"
+                           modelAttribute="customerDTO">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 widget-container-col">
                             <div class="widget-box">
@@ -140,82 +140,37 @@
                                     <div class="widget-main row">
 
                                         <div class="form-group col-sm-6">
-                                            <label class="control-label">Tên tòa nhà</label>
+                                            <label class="control-label">Tên khách hàng</label>
                                             <form:input path="name" class="form-control"/>
                                         </div>
                                         <div class="form-group col-sm-6">
-                                            <label class="control-label">Diện tích sàn</label>
-                                            <form:input path="floorArea" class="form-control" type="number"/>
+                                            <label class="control-label">Di động </label>
+                                            <form:input path="customerPhone" class="form-control" type="number"/>
                                         </div>
+
+                                        <div class="form-group col-sm-5">
+                                            <label class="control-label">Email</label>
+                                            <form:input path="email" class="form-control"/>
+                                        </div>
+
                                         <div class="form-group col-sm-2">
-                                            <label>Chọn quận</label>
+                                            <label>Trạng thái</label>
                                             <br/>
-                                            <form:select path="district" class="chosen-select form-control">
-                                                <form:option value=""> -- Chọn quận -- </form:option>
-                                                <form:options items="${districts}"/>
+                                            <form:select path="status" class="chosen-select form-control">
+                                                <form:option value=""> -- Chọn trạng thái -- </form:option>
+                                                <form:options items="${statuses}"/>
                                             </form:select>
 
+                                        </div>
 
-                                        </div>
-                                        <div class="form-group col-sm-5">
-                                            <label class="control-label">Phường</label>
-                                            <form:input path="ward" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-5">
-                                            <label class="control-label">Đường</label>
-                                            <form:input path="street" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            <label class="control-label">Số tầng hầm</label>
-                                            <form:input type="number" path="numberOfBasement" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            <label class="control-label">Hướng</label>
-                                            <form:input path="direction" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-4">
-                                            <label class="control-label">Hạng</label>
-                                            <form:input type="number" path="level" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label class="control-label">Diện tích từ</label>
-                                            <form:input type="number" path="areaFrom" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label class="control-label">Diện tích đến</label>
-                                            <form:input type="number" path="areaTo" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label class="control-label">Giá thuê từ</label>
-                                            <form:input type="number" path="rentPriceFrom" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-3">
-                                            <label class="control-label">Giá thuê đến</label>
-                                            <form:input type="number" path="rentPriceTo" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-5">
-                                            <label class="control-label">Tên quản lí</label>
-                                            <form:input path="managerName" class="form-control"/>
-                                        </div>
-                                        <div class="form-group col-sm-5">
-                                            <label class="control-label">Số điện thoại quản
-                                                lí</label>
-                                            <form:input path="managerPhone" class="form-control"/>
-                                        </div>
                                         <div class="form-group col-sm-2">
                                             <label>Chọn nhân viên</label>
                                             <br/>
 
-                                            <form:select path="staffId" class="chosen-select form-control">
+                                            <form:select path="managementStaff" class="chosen-select form-control">
                                                 <form:option value=""> -- Chọn nhân viên -- </form:option>
                                                 <form:options items="${staff}"/>
                                             </form:select>
-                                        </div>
-
-                                        <div class="col-xs-12 col-sm-12">
-                                            <div class="control-group form-inline">
-                                                <form:checkboxes path="typeCode" items="${typeCodes}"/>
-                                            </div>
                                         </div>
 
                                         <div class="col-xs-12 col-sm-12" style="margin-top: 15px;">
@@ -231,38 +186,30 @@
                             </div>
 
                             <div class="text-right" style="margin-top: 10px;">
-                                <a href="/admin/building-edit">
+                                <a href="/admin/customer-edit">
                                     <button class="btn btn-success" title="Thêm tòa nhà" type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor" class="bi bi-building-add" viewBox="0 0 16 16">
-                                            <path
-                                                    d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
-                                            <path
-                                                    d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
-                                            <path
-                                                    d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                             fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                            <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
                                         </svg>
                                     </button>
                                 </a>
 
                                 <button class="btn btn-danger" title="Xóa tòa nhà" id="btn-delete-buildings">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-building-dash" viewBox="0 0 16 16">
-                                        <path
-                                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
-                                        <path
-                                                d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
-                                        <path
-                                                d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                         class="bi bi-person-fill-dash" viewBox="0 0 16 16">
+                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1m0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
                                     </svg>
                                 </button>
                             </div>
 
                             <div class="col-xs-12" style="margin-top: 60px;">
-                                <display:table name="buildingSearchResponse.listResult"
-                                               requestURI="/admin/building-list"
-                                               size="${buildingSearchResponse.totalItems}"
-                                               pagesize="${buildingSearchResponse.maxPageItems}"
+                                <display:table name="${customerSearchResponse}"
+                                               requestURI="/admin/customer-list"
+                                               size="${totalItems}"
+                                               pagesize="${pageSize}"
                                                class="table table-striped table-bordered table-hover"
                                                partialList="true"
                                                id="tableList"
@@ -276,31 +223,30 @@
                                         <span class="lbl"></span>
                                     </display:column>
 
-                                    <display:column property="name" title="Tên tòa nhà" />
-                                    <display:column property="address" title="Địa chỉ"/>
-                                    <display:column property="numberOfBasement" title="Số tầng hầm"/>
-                                    <display:column property="managerName" title="Tên quản lí"/>
-                                    <display:column property="managerPhone" title="SĐT quản lí"/>
-                                    <display:column property="floorArea" title="Diện tích sàn"/>
-                                    <display:column property="rentArea" title="Diện tích thuê"/>
-                                    <display:column property="emptyArea" title="Diện tích trống"/>
-                                    <display:column property="rentPrice" title="Giá thuê"/>
-                                    <display:column property="serviceFee" title="Phí dịch vụ"/>
-                                    <display:column property="brokerageFee" title="Phí môi giới"/>
+                                    <display:column property="name" title="Tên khách hàng"/>
+                                    <display:column property="customerPhone" title="Di động"/>
+                                    <display:column property="email" title="Email"/>
+                                    <display:column property="demand" title="Nhu cầu"/>
+                                    <display:column property="createdBy" title="Người thêm"/>
+                                    <display:column property="createdDate" title="Ngày thêm"/>
+                                    <display:column property="status" title="Tình trạng"/>
 
                                     <display:column title="Thao tác" media="html">
                                         <div class="btn-group">
-                                            <button class="btn btn-xs btn-success" type="button" title="Giao tòa nhà"
+                                            <button class="btn btn-xs btn-success" type="button"
+                                                    title="Giao khách hàng"
                                                     onclick="openAssignmentBuildingModel(${tableList.id})">
                                                 <i class="ace-icon glyphicon glyphicon-user"></i>
                                             </button>
 
-                                            <a href="/admin/building-edit-${tableList.id}" class="btn btn-xs btn-info"
-                                               title="Sửa tòa nhà">
+                                            <a href="/admin/customer-edit-${tableList.id}"
+                                               class="btn btn-xs btn-info"
+                                               title="Sửa khách hàng">
                                                 <i class="ace-icon fa fa-pencil bigger-120"></i>
                                             </a>
 
-                                            <button class="btn btn-xs btn-danger" type="button" title="Xóa tòa nhà"
+                                            <button class="btn btn-xs btn-danger" type="button"
+                                                    title="Xóa tòa nhà"
                                                     onclick="deleteBuilding(${tableList.id})">
                                                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                             </button>
@@ -308,10 +254,8 @@
                                     </display:column>
 
                                 </display:table>
-
                             </div><!-- /.span -->
                         </div>
-
 
                     </div>
                     <!-- /.row -->
@@ -348,11 +292,11 @@
 
                         </tbody>
                     </table>
-                    <input type="hidden" value="" id="buildingId">
+                    <input type="hidden" value="" id="customerId">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy thao tác</button>
-                    <button type="button" class="btn btn-success" id="btn-assign-building">Giao tòa nhà</button>
+                    <button type="button" class="btn btn-success" id="btn-assign-building">Giao khách hàng</button>
                 </div>
             </div>
         </div>
@@ -371,11 +315,11 @@
     })
 
 
-    function openAssignmentBuildingModel(buildingId) {
+    function openAssignmentBuildingModel(customerId) {
 
         $('#assignmentBuildingModal').modal();
-        $('#buildingId').val(buildingId);
-        loadStaffs(buildingId)
+        $('#customerId').val(customerId);
+        loadStaffs(customerId)
     }
 
     $('#btn-assign-building').click(function (e) {
@@ -385,9 +329,9 @@
         }).get();
         var data = {};
         data['staffs'] = staffIds;
-        data['buildingId'] = $('#buildingId').val();
-        if (data['buildingId'] == null) {
-            alert('Không tìm thấy id tòa nhà');
+        data['customerId'] = $('#customerId').val();
+        if (data['customerId'] == null) {
+            alert('Không tìm thấy id khách hàng');
         } else {
             assignBuilding(data);
         }
@@ -395,13 +339,13 @@
 
     $('#btn-delete-buildings').click(function (e) {
         e.preventDefault();
-        var buildingIds = $('#tableList').find('input[type=checkbox]:checked').map(function () {
+        var customerIds = $('#tableList').find('input[type=checkbox]:checked').map(function () {
             return $(this).val();
         }).get();
-        if (buildingIds.length === 0) {
+        if (customerIds.length === 0) {
             alert('Vui lòng chọn tòa nhà để xóa!');
         } else {
-            deleteBuildings(buildingIds);
+            deleteBuildings(customerIds);
         }
     });
 
@@ -417,7 +361,7 @@
     function deleteBuildings(ids) {
         $.ajax({
             type: "DELETE",
-            url: "/api/buildings/" + ids,
+            url: "/api/customers/" + ids,
             // data: JSON.stringify(buildingInfoJson),
             dataType: "json",
             // contentType: "application/json",
@@ -435,7 +379,7 @@
     function assignBuilding(data) {
         $.ajax({
             type: "POST",
-            url: "/api/building-assignments",
+            url: "/api/customer-assignments",
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
@@ -450,10 +394,10 @@
         });
     }
 
-    function loadStaffs(buildingId) {
+    function loadStaffs(customerId) {
         $.ajax({
             type: "GET",
-            url: "/api/buildings/" + buildingId + "/staffs",
+            url: "/api/customers/" + customerId + "/staffs",
             dataType: "json",
             success: function (response) {
                 var row = '';

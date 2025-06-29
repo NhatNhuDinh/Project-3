@@ -1,10 +1,9 @@
 package com.javaweb.api.admin;
 
-import com.javaweb.model.dto.AssignmentBuildingDTO;
-import com.javaweb.model.dto.BuildingDTO;
+import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.service.IBuildingService;
+import com.javaweb.service.ICustomerService;
 import com.javaweb.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,49 +13,46 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/buildings")
-public class BuildingAPI {
+@RequestMapping("/api/customers")
+public class CustomerAPI {
 
     @Autowired
-    private IBuildingService buildingService;
+    private ICustomerService customerService;
 
     @Autowired
     private IUserService userService;
 
-    //create or update
     @PostMapping()
-    public ResponseEntity<ResponseDTO> createBuilding(@Valid @RequestBody BuildingDTO buildingDTO) {
+    public ResponseEntity<ResponseDTO> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
+        customerService.addCustomer(customerDTO);
         responseDTO.setMessage("Success");
-        responseDTO.setData(buildingService.create(buildingDTO)); // return Building Entity - Json
         return ResponseEntity.ok(responseDTO);
     }
 
     @PutMapping()
-    public ResponseEntity<ResponseDTO> updateBuilding(@Valid @RequestBody BuildingDTO buildingDTO) {
+    public ResponseEntity<ResponseDTO> updateBuilding(@Valid @RequestBody CustomerDTO customerDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
+        customerService.updateCustomer(customerDTO);
         responseDTO.setMessage("Success");
-        responseDTO.setData(buildingService.update(buildingDTO)); // return Building Entity - Json
         return ResponseEntity.ok(responseDTO);
     }
 
-    
     @DeleteMapping("/{ids}")
     public ResponseEntity<ResponseDTO> deleteBuildings(@PathVariable List<Long> ids) {
-        buildingService.deleteAll(ids);
         ResponseDTO responseDTO = new ResponseDTO();
+        customerService.deleteCustomers(ids);
         responseDTO.setMessage("Success");
         return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/{id}/staffs")
     public ResponseEntity<ResponseDTO> getStaffs(@PathVariable Long id) {
-        List<StaffResponseDTO> staffResponseDTOList = userService.staffListForBuilding(id);
+        List<StaffResponseDTO> staffResponseDTOList = userService.staffListForCustomer(id);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setMessage("Success");
         responseDTO.setData(staffResponseDTOList);
         return ResponseEntity.ok(responseDTO);
     }
-
 
 }

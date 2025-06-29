@@ -1,0 +1,40 @@
+package com.javaweb.entity;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "customer")
+@Getter
+@Setter
+public class CustomerEntity extends BaseEntity {
+
+    @Column(name = "fullname", nullable = false)
+    private String fullName;
+    @Column(name = "phone", nullable = false)
+    private String phone;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "companyname")
+    private String companyName;
+    @Column(name = "demand")
+    private String demand;
+    @Column(name = "status")
+    private String status;
+    @Column(name = "is_active")
+    private Long isActive = 1L;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "assignmentcustomer",
+            joinColumns = @JoinColumn(name = "customerid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+    private List<UserEntity> userEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customerEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionEntity> transactionEntityList = new ArrayList<>();
+}

@@ -1,5 +1,6 @@
 package com.javaweb.controller.web;
 
+import com.javaweb.model.dto.CustomerDTO;
 import com.javaweb.model.dto.UserRegisterDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.service.IUserService;
@@ -53,6 +54,7 @@ public class HomeController {
     @GetMapping(value="/lien-he")
     public ModelAndView contact(){
         ModelAndView mav = new ModelAndView("/web/contact");
+        mav.addObject("customerDTO", new CustomerDTO());
         return mav;
     }
 

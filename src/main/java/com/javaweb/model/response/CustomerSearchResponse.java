@@ -1,21 +1,17 @@
-package com.javaweb.model.dto;
+package com.javaweb.model.response;
 
+import com.javaweb.model.dto.AbstractDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-
 @Getter
 @Setter
-public class CustomerDTO extends AbstractDTO{
-    @NotBlank(message = "Vui lòng nhập tên khách hàng")
+public class CustomerSearchResponse extends AbstractDTO {
     private String name;
     private Long managementStaff;
-    @NotBlank(message = "Số điện thoại không được để trống")
     private String customerPhone;
     private String email;
     private String demand;
     private String status;
     private String companyName;
-
 }

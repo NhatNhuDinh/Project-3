@@ -48,6 +48,9 @@ public class UserEntity extends BaseEntity {
     @ManyToMany(mappedBy = "userEntityList", fetch = FetchType.LAZY)
     private List<BuildingEntity> buildingEntityList = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "userEntityList", fetch = FetchType.LAZY)
+    private List<CustomerEntity> customerEntityList = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
 //    @JsonManagedReference(value = "user-assignmentBuilding")
 //    private List<AssignmentBuildingEntity> assignmentBuildingEntityList;

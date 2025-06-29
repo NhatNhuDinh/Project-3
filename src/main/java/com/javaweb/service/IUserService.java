@@ -29,5 +29,6 @@ public interface IUserService {
     boolean findByUserName(String userName);
     Map<Long, String> getStaffs();
     void insert(UserRegisterDTO userRegisterDTO);
-    List<StaffResponseDTO> staffList(Long buildingId);
+    List<StaffResponseDTO> staffListForBuilding(Long buildingId);
+    List<StaffResponseDTO> staffListForCustomer(Long customerId);
 }

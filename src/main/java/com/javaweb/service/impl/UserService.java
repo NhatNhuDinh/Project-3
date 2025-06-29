@@ -109,20 +109,34 @@ public class UserService implements IUserService {
         userRepository.save(userEntity);
     }
 
-    @Override
-    public List<StaffResponseDTO> staffList(Long buildingId) {
-        List<UserEntity> allStaff = userRepository.findByStatusAndRoles_Code(1, "STAFF");
-        List<UserEntity> assignedStaff = userRepository.findByStatusAndRoles_CodeAndBuildingEntityList_Id(1, "STAFF", buildingId);
+   private List<StaffResponseDTO> getStaffListWithChecked(List<UserEntity> allStaff, List<UserEntity> assignedStaff) {
+        Set<Long> assignedStaffIds = assignedStaff.stream()
+                .map(UserEntity::getId)
+                .collect(Collectors.toSet());
         return allStaff.stream()
                 .map(staff -> {
                     StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
                     staffResponseDTO.setStaffId(staff.getId());
                     staffResponseDTO.setFullName(staff.getFullName());
-                    if (assignedStaff.contains(staff)) {
+                    if (assignedStaffIds.contains(staff.getId())) {
                         staffResponseDTO.setChecked("checked");
                     }
                     return staffResponseDTO;
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StaffResponseDTO> staffListForBuilding(Long buildingId) {
+        List<UserEntity> allStaff = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> assignedStaff = userRepository.findByStatusAndRoles_CodeAndBuildingEntityList_Id(1, "STAFF", buildingId);
+        return getStaffListWithChecked(allStaff, assignedStaff);
+    }
+
+    @Override
+    public List<StaffResponseDTO> staffListForCustomer(Long customerId) {
+        List<UserEntity> allStaff = userRepository.findByStatusAndRoles_Code(1, "STAFF");
+        List<UserEntity> assignedStaff = userRepository.findByStatusAndRoles_CodeAndCustomerEntityList_Id(1, "STAFF", customerId);
+        return getStaffListWithChecked(allStaff, assignedStaff);
     }
 
 
