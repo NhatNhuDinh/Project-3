@@ -274,12 +274,13 @@
                                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                                         </button>
 
-
-                                                        <button class="btn btn-xs btn-danger" type="button"
-                                                                title="Xóa giao dịch"
-                                                                onclick="deleteTransaction(${cskh.transactionId})">
-                                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                                        </button>
+                                                        <security:authorize access="hasAnyRole('MANAGER')">
+                                                            <button class="btn btn-xs btn-danger" type="button"
+                                                                    title="Xóa giao dịch"
+                                                                    onclick="deleteTransaction(${cskh.transactionId})">
+                                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                            </button>
+                                                        </security:authorize>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -365,12 +366,13 @@
                                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
                                                         </button>
 
-
-                                                        <button class="btn btn-xs btn-danger" type="button"
-                                                                title="Xóa giao dịch"
-                                                                onclick="deleteTransaction(${ddx.transactionId})">
-                                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                                        </button>
+                                                        <security:authorize access="hasAnyRole('MANAGER')">
+                                                            <button class="btn btn-xs btn-danger" type="button"
+                                                                    title="Xóa giao dịch"
+                                                                    onclick="deleteTransaction(${ddx.transactionId})">
+                                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                            </button>
+                                                        </security:authorize>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -528,11 +530,7 @@
                     window.location.href = "/admin/customer-list";
                 },
                 error: function (response) {
-                    var err = response.responseJSON.message;
-                    $.each(response.responseJSON.data, function (i, it) {
-                        err += '\n' + it;
-                    })
-                    alert(err)
+                    alert(response.responseJSON.data)
                 }
 
             });
@@ -550,11 +548,7 @@
                     window.location.href = "/admin/customer-list";
                 },
                 error: function (response) {
-                    var err = response.responseJSON.message;
-                    $.each(response.responseJSON.data, function (i, it) {
-                        err += '\n' + it;
-                    })
-                    alert(err)
+                    alert(response.responseJSON.data)
                 }
 
             });

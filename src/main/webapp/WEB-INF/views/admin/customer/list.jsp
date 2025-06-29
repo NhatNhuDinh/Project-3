@@ -162,17 +162,18 @@
                                             </form:select>
 
                                         </div>
+                                        <security:authorize access="hasAnyRole('MANAGER')">
+                                            <div class="form-group col-sm-2">
+                                                <label>Chọn nhân viên</label>
+                                                <br/>
 
-                                        <div class="form-group col-sm-2">
-                                            <label>Chọn nhân viên</label>
-                                            <br/>
+                                                <form:select path="managementStaff" class="chosen-select form-control">
+                                                    <form:option value=""> -- Chọn nhân viên -- </form:option>
+                                                    <form:options items="${staff}"/>
+                                                </form:select>
 
-                                            <form:select path="managementStaff" class="chosen-select form-control">
-                                                <form:option value=""> -- Chọn nhân viên -- </form:option>
-                                                <form:options items="${staff}"/>
-                                            </form:select>
-                                        </div>
-
+                                            </div>
+                                        </security:authorize>
                                         <div class="col-xs-12 col-sm-12" style="margin-top: 15px;">
                                             <button class="btn btn-primary" id="search-button">
                                                 <i class="ace-icon fa fa-search nav-search-icon"> Tìm kiếm </i>
@@ -195,7 +196,7 @@
                                         </svg>
                                     </button>
                                 </a>
-
+                                <security:authorize access="hasAnyRole('MANAGER')">
                                 <button class="btn btn-danger" title="Xóa tòa nhà" id="btn-delete-buildings">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                          class="bi bi-person-fill-dash" viewBox="0 0 16 16">
@@ -203,6 +204,7 @@
                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
                                     </svg>
                                 </button>
+                                </security:authorize>
                             </div>
 
                             <div class="col-xs-12" style="margin-top: 60px;">
@@ -233,23 +235,25 @@
 
                                     <display:column title="Thao tác" media="html">
                                         <div class="btn-group">
-                                            <button class="btn btn-xs btn-success" type="button"
-                                                    title="Giao khách hàng"
-                                                    onclick="openAssignmentBuildingModel(${tableList.id})">
-                                                <i class="ace-icon glyphicon glyphicon-user"></i>
-                                            </button>
-
+                                            <security:authorize access="hasAnyRole('MANAGER')">
+                                                <button class="btn btn-xs btn-success" type="button"
+                                                        title="Giao khách hàng"
+                                                        onclick="openAssignmentBuildingModel(${tableList.id})">
+                                                    <i class="ace-icon glyphicon glyphicon-user"></i>
+                                                </button>
+                                            </security:authorize>
                                             <a href="/admin/customer-edit-${tableList.id}"
                                                class="btn btn-xs btn-info"
                                                title="Sửa khách hàng">
                                                 <i class="ace-icon fa fa-pencil bigger-120"></i>
                                             </a>
-
-                                            <button class="btn btn-xs btn-danger" type="button"
-                                                    title="Xóa tòa nhà"
-                                                    onclick="deleteBuilding(${tableList.id})">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </button>
+                                            <security:authorize access="hasAnyRole('MANAGER')">
+                                                <button class="btn btn-xs btn-danger" type="button"
+                                                        title="Xóa tòa nhà"
+                                                        onclick="deleteBuilding(${tableList.id})">
+                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                </button>
+                                            </security:authorize>
                                         </div>
                                     </display:column>
 

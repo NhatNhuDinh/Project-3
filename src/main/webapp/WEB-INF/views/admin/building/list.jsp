@@ -244,18 +244,20 @@
                                         </svg>
                                     </button>
                                 </a>
-
-                                <button class="btn btn-danger" title="Xóa tòa nhà" id="btn-delete-buildings">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-building-dash" viewBox="0 0 16 16">
-                                        <path
-                                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
-                                        <path
-                                                d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
-                                        <path
-                                                d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
-                                    </svg>
-                                </button>
+                                <security:authorize access="hasAnyRole('MANAGER')">
+                                    <button class="btn btn-danger" title="Xóa tòa nhà" id="btn-delete-buildings">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
+                                             class="bi bi-building-dash" viewBox="0 0 16 16">
+                                            <path
+                                                    d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
+                                            <path
+                                                    d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
+                                            <path
+                                                    d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                        </svg>
+                                    </button>
+                                </security:authorize>
                             </div>
 
                             <div class="col-xs-12" style="margin-top: 60px;">
@@ -276,7 +278,7 @@
                                         <span class="lbl"></span>
                                     </display:column>
 
-                                    <display:column property="name" title="Tên tòa nhà" />
+                                    <display:column property="name" title="Tên tòa nhà"/>
                                     <display:column property="address" title="Địa chỉ"/>
                                     <display:column property="numberOfBasement" title="Số tầng hầm"/>
                                     <display:column property="managerName" title="Tên quản lí"/>
@@ -290,20 +292,23 @@
 
                                     <display:column title="Thao tác" media="html">
                                         <div class="btn-group">
-                                            <button class="btn btn-xs btn-success" type="button" title="Giao tòa nhà"
-                                                    onclick="openAssignmentBuildingModel(${tableList.id})">
-                                                <i class="ace-icon glyphicon glyphicon-user"></i>
-                                            </button>
-
+                                            <security:authorize access="hasAnyRole('MANAGER')">
+                                                <button class="btn btn-xs btn-success" type="button"
+                                                        title="Giao tòa nhà"
+                                                        onclick="openAssignmentBuildingModel(${tableList.id})">
+                                                    <i class="ace-icon glyphicon glyphicon-user"></i>
+                                                </button>
+                                            </security:authorize>
                                             <a href="/admin/building-edit-${tableList.id}" class="btn btn-xs btn-info"
                                                title="Sửa tòa nhà">
                                                 <i class="ace-icon fa fa-pencil bigger-120"></i>
                                             </a>
-
-                                            <button class="btn btn-xs btn-danger" type="button" title="Xóa tòa nhà"
-                                                    onclick="deleteBuilding(${tableList.id})">
-                                                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                            </button>
+                                            <security:authorize access="hasAnyRole('MANAGER')">
+                                                <button class="btn btn-xs btn-danger" type="button" title="Xóa tòa nhà"
+                                                        onclick="deleteBuilding(${tableList.id})">
+                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                </button>
+                                            </security:authorize>
                                         </div>
                                     </display:column>
 

@@ -4,6 +4,7 @@ import com.javaweb.security.CustomSuccessHandler;
 import com.javaweb.service.impl.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,8 +46,52 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 http.csrf().disable()
                 .authorizeRequests()
                         //.antMatchers("/admin/building-edit").hasAnyRole("MANAGER")
-                        .antMatchers("/admin/**").hasAnyRole("MANAGER","STAFF","ADMIN")
+                        .antMatchers("/admin/home").hasAnyRole("MANAGER","STAFF")
                         .antMatchers("/login", "/resource/**", "/trang-chu", "/api/**").permitAll()
+
+                        //building api
+                        .antMatchers(HttpMethod.POST,"/api/buildings").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.PUT,"/api/buildings").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.DELETE,"/api/buildings/{ids}").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.GET,"/api/buildings/{id}/staffs").hasAnyRole("MANAGER","STAFF")
+
+                        //building controller
+                        .antMatchers(HttpMethod.GET,"/admin/building-list").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.GET,"/admin/building-edit").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.GET,"/admin/building-edit-{id}").hasAnyRole("MANAGER","STAFF")
+
+                        //assignment-building-api
+                        .antMatchers(HttpMethod.POST,"/api/building-assignments").hasAnyRole("MANAGER")
+
+                        //assignment-customer-api
+                        .antMatchers(HttpMethod.POST,"/api/customer-assignments").hasAnyRole("MANAGER")
+
+                        //customer api
+                        .antMatchers(HttpMethod.POST,"/api/customers").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.PUT,"/api/customers").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.DELETE,"/api/customers/{ids}").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.GET,"/api/customers/{id}/staffs").hasAnyRole("MANAGER","STAFF")
+
+                        //customer controller
+                        .antMatchers(HttpMethod.GET,"/admin/customer-list").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.GET,"/admin/customer-edit").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.GET,"/admin/customer-edit-{id}").hasAnyRole("MANAGER","STAFF")
+
+                        //transaction api
+                        .antMatchers(HttpMethod.POST,"/api/transactions").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.GET,"/api/transactions/{id}").hasAnyRole("MANAGER","STAFF")
+                        .antMatchers(HttpMethod.DELETE,"/api/transactions/{id}").hasAnyRole("MANAGER")
+
+                        //user api
+                        .antMatchers(HttpMethod.DELETE,"/api/user").hasAnyRole("MANAGER")
+
+                        //user controller
+                        .antMatchers(HttpMethod.GET,"/admin/user-list").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.GET,"/admin/user-edit").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.GET,"/admin/user-edit-{id}").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.GET,"/admin/profile-{username}").hasAnyRole("MANAGER")
+                        .antMatchers(HttpMethod.GET,"/admin/profile-password").hasAnyRole("MANAGER")
+
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("j_username").passwordParameter("j_password").permitAll()
                 .loginProcessingUrl("/j_spring_security_check")
